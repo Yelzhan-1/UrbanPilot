@@ -1,0 +1,76 @@
+[
+  {
+    "id": "rec-201",
+    "anomalyId": "anm-101",
+    "sector": "Transport",
+    "title": "Re-route Freight Traffic from Western Arterial",
+    "description": "Divert all incoming heavy goods vehicles to the Northern Bypass to relieve critical congestion and reduce localized emissions.",
+    "suggestedActions": [
+      "Activate digital diversion signage at highway junction 4",
+      "Deploy manual traffic control units to Western Arterial on-ramps",
+      "Send automated push notifications to regional logistics partners"
+    ],
+    "estimatedImpactScore": 85,
+    "implementationDifficulty": "medium",
+    "status": "pending"
+  },
+  {
+    "id": "rec-202",
+    "anomalyId": "anm-103",
+    "sector": "Utilities",
+    "title": "Initiate Emergency Load Shedding",
+    "description": "Substation Alpha is at critical capacity. Immediately drop non-essential industrial blocks in Sector C to prevent cascading hardware failure.",
+    "suggestedActions": [
+      "Remotely isolate Grid Blocks C-1 and C-2",
+      "Dispatch automated brownout warnings to affected facility managers",
+      "Spin up auxiliary battery reserves for critical infrastructure in the basin"
+    ],
+    "estimatedImpactScore": 95,
+    "implementationDifficulty": "high",
+    "status": "pending"
+  },
+  {
+    "id": "rec-203",
+    "anomalyId": "anm-104",
+    "sector": "Safety",
+    "title": "Deploy Hazmat Containment and Establish Perimeter",
+    "description": "VOC chemical leak detected in Sector B. Immediate physical containment and evacuation of the surrounding 500m radius is required to prevent civilian exposure.",
+    "suggestedActions": [
+      "Dispatch specialized Fire/Hazmat Unit 7 to coordinate coordinates",
+      "Trigger automated HVAC lockdown in adjacent industrial units",
+      "Activate localized emergency cellular broadcast system"
+    ],
+    "estimatedImpactScore": 98,
+    "implementationDifficulty": "high",
+    "status": "pending"
+  },
+  {
+    "id": "rec-204",
+    "anomalyId": "anm-108",
+    "sector": "Safety",
+    "title": "Activate Automated DDoS Mitigation Protocols",
+    "description": "Port Authority network infrastructure is currently under severe strain. Throttle incoming external requests and reroute through secondary scrubbing centers.",
+    "suggestedActions": [
+      "Enable dynamic traffic scrubbing on primary load balancers",
+      "Temporarily geo-block non-essential inbound connections",
+      "Air-gap core logistics operational subnets from the public facing API"
+    ],
+    "estimatedImpactScore": 75,
+    "implementationDifficulty": "low",
+    "status": "in_progress"
+  },
+  {
+    "id": "rec-205",
+    "anomalyId": "anm-106",
+    "sector": "Utilities",
+    "title": "Dispatch Maintenance Crew for Pressure Check",
+    "description": "Minor pressure drop observed in residential secondary water mains. Preventative maintenance check required to ensure no localized pipe fractures.",
+    "suggestedActions": [
+      "Assign Tier 1 utility maintenance drone to scan Block 4",
+      "Isolate secondary valves if leakage exceeds 5% threshold"
+    ],
+    "estimatedImpactScore": 40,
+    "implementationDifficulty": "low",
+    "status": "resolved"
+  }
+]

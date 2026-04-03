@@ -1,0 +1,142 @@
+[
+  {
+    "timestamp": "2026-04-03T16:00:00+05:00",
+    "sector": "Transport",
+    "predictedValue": 55,
+    "confidenceLowerBound": 45,
+    "confidenceUpperBound": 65
+  },
+  {
+    "timestamp": "2026-04-03T16:00:00+05:00",
+    "sector": "Ecology",
+    "predictedValue": 75,
+    "confidenceLowerBound": 65,
+    "confidenceUpperBound": 80
+  },
+  {
+    "timestamp": "2026-04-03T16:00:00+05:00",
+    "sector": "Safety",
+    "predictedValue": 82,
+    "confidenceLowerBound": 70,
+    "confidenceUpperBound": 90
+  },
+  {
+    "timestamp": "2026-04-03T16:00:00+05:00",
+    "sector": "Utilities",
+    "predictedValue": 60,
+    "confidenceLowerBound": 40,
+    "confidenceUpperBound": 70
+  },
+  {
+    "timestamp": "2026-04-03T17:00:00+05:00",
+    "sector": "Transport",
+    "predictedValue": 45,
+    "confidenceLowerBound": 35,
+    "confidenceUpperBound": 55
+  },
+  {
+    "timestamp": "2026-04-03T17:00:00+05:00",
+    "sector": "Ecology",
+    "predictedValue": 70,
+    "confidenceLowerBound": 60,
+    "confidenceUpperBound": 78
+  },
+  {
+    "timestamp": "2026-04-03T17:00:00+05:00",
+    "sector": "Safety",
+    "predictedValue": 83,
+    "confidenceLowerBound": 75,
+    "confidenceUpperBound": 90
+  },
+  {
+    "timestamp": "2026-04-03T17:00:00+05:00",
+    "sector": "Utilities",
+    "predictedValue": 70,
+    "confidenceLowerBound": 55,
+    "confidenceUpperBound": 80
+  },
+  {
+    "timestamp": "2026-04-03T18:00:00+05:00",
+    "sector": "Transport",
+    "predictedValue": 40,
+    "confidenceLowerBound": 30,
+    "confidenceUpperBound": 50
+  },
+  {
+    "timestamp": "2026-04-03T18:00:00+05:00",
+    "sector": "Ecology",
+    "predictedValue": 68,
+    "confidenceLowerBound": 55,
+    "confidenceUpperBound": 75
+  },
+  {
+    "timestamp": "2026-04-03T18:00:00+05:00",
+    "sector": "Safety",
+    "predictedValue": 85,
+    "confidenceLowerBound": 78,
+    "confidenceUpperBound": 92
+  },
+  {
+    "timestamp": "2026-04-03T18:00:00+05:00",
+    "sector": "Utilities",
+    "predictedValue": 75,
+    "confidenceLowerBound": 65,
+    "confidenceUpperBound": 85
+  },
+  {
+    "timestamp": "2026-04-03T19:00:00+05:00",
+    "sector": "Transport",
+    "predictedValue": 60,
+    "confidenceLowerBound": 50,
+    "confidenceUpperBound": 70
+  },
+  {
+    "timestamp": "2026-04-03T19:00:00+05:00",
+    "sector": "Ecology",
+    "predictedValue": 74,
+    "confidenceLowerBound": 65,
+    "confidenceUpperBound": 80
+  },
+  {
+    "timestamp": "2026-04-03T19:00:00+05:00",
+    "sector": "Safety",
+    "predictedValue": 86,
+    "confidenceLowerBound": 80,
+    "confidenceUpperBound": 93
+  },
+  {
+    "timestamp": "2026-04-03T19:00:00+05:00",
+    "sector": "Utilities",
+    "predictedValue": 80,
+    "confidenceLowerBound": 72,
+    "confidenceUpperBound": 88
+  },
+  {
+    "timestamp": "2026-04-03T20:00:00+05:00",
+    "sector": "Transport",
+    "predictedValue": 78,
+    "confidenceLowerBound": 70,
+    "confidenceUpperBound": 85
+  },
+  {
+    "timestamp": "2026-04-03T20:00:00+05:00",
+    "sector": "Ecology",
+    "predictedValue": 80,
+    "confidenceLowerBound": 72,
+    "confidenceUpperBound": 88
+  },
+  {
+    "timestamp": "2026-04-03T20:00:00+05:00",
+    "sector": "Safety",
+    "predictedValue": 88,
+    "confidenceLowerBound": 82,
+    "confidenceUpperBound": 94
+  },
+  {
+    "timestamp": "2026-04-03T20:00:00+05:00",
+    "sector": "Utilities",
+    "predictedValue": 85,
+    "confidenceLowerBound": 78,
+    "confidenceUpperBound": 92
+  }
+]

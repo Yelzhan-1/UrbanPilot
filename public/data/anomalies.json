@@ -1,0 +1,98 @@
+[
+  {
+    "id": "anm-101",
+    "title": "Severe Gridlock on Western Arterial",
+    "description": "Traffic flow has degraded to 15% of normal capacity. Pattern analysis suggests an accident combined with rush hour volume.",
+    "sector": "Transport",
+    "severity": "high",
+    "districtId": "dist-002",
+    "timestamp": "2026-04-03T14:45:00+05:00",
+    "metricValue": 12.5,
+    "metricUnit": "km/h",
+    "aiRiskScore": 78
+  },
+  {
+    "id": "anm-102",
+    "title": "Elevated Localized Emissions",
+    "description": "NOx and PM2.5 levels are spiking along the highway corridor, directly correlating with the traffic gridlock.",
+    "sector": "Ecology",
+    "severity": "medium",
+    "districtId": "dist-002",
+    "timestamp": "2026-04-03T15:05:00+05:00",
+    "metricValue": 145,
+    "metricUnit": "AQI",
+    "aiRiskScore": 62
+  },
+  {
+    "id": "anm-103",
+    "title": "Critical Power Grid Strain",
+    "description": "Substation Alpha in the Industrial Basin is operating at 115% capacity. Risk of cascading failure if load is not shed within 45 minutes.",
+    "sector": "Utilities",
+    "severity": "critical",
+    "districtId": "dist-003",
+    "timestamp": "2026-04-03T15:12:00+05:00",
+    "metricValue": 115,
+    "metricUnit": "% load",
+    "aiRiskScore": 95
+  },
+  {
+    "id": "anm-104",
+    "title": "Suspected Chemical Leak",
+    "description": "Multi-spectral sensors in Sector B indicate presence of volatile organic compounds (VOCs). Immediate perimeter containment advised.",
+    "sector": "Safety",
+    "severity": "critical",
+    "districtId": "dist-003",
+    "timestamp": "2026-04-03T15:22:00+05:00",
+    "metricValue": 88,
+    "metricUnit": "Hazard Index",
+    "aiRiskScore": 98
+  },
+  {
+    "id": "anm-105",
+    "title": "Secondary Water Main Pressure Drop",
+    "description": "Pressure sensors indicate a 15% drop below baseline in residential block 4. Likely a minor leak or unauthorized draw.",
+    "sector": "Utilities",
+    "severity": "low",
+    "districtId": "dist-004",
+    "timestamp": "2026-04-03T13:30:00+05:00",
+    "metricValue": 2.1,
+    "metricUnit": "bar",
+    "aiRiskScore": 25
+  },
+  {
+    "id": "anm-106",
+    "title": "Perimeter Breach at Cargo Gate 4",
+    "description": "Thermal cameras detected unauthorized access. Port security has been dispatched to intercept.",
+    "sector": "Safety",
+    "severity": "high",
+    "districtId": "dist-005",
+    "timestamp": "2026-04-03T15:18:00+05:00",
+    "metricValue": 1,
+    "metricUnit": "breach event",
+    "aiRiskScore": 85
+  },
+  {
+    "id": "anm-107",
+    "title": "Unusual Network Traffic Spikes",
+    "description": "South Port Authority server nodes are experiencing a 400% increase in inbound requests. Potential DDoS attempt.",
+    "sector": "Safety",
+    "severity": "medium",
+    "districtId": "dist-005",
+    "timestamp": "2026-04-03T15:20:00+05:00",
+    "metricValue": 45000,
+    "metricUnit": "req/sec",
+    "aiRiskScore": 70
+  },
+  {
+    "id": "anm-108",
+    "title": "Abnormal Energy Draw",
+    "description": "Research facilities in the campus zone are drawing 3x their standard baseline power.",
+    "sector": "Utilities",
+    "severity": "low",
+    "districtId": "dist-007",
+    "timestamp": "2026-04-03T14:10:00+05:00",
+    "metricValue": 310,
+    "metricUnit": "kW excess",
+    "aiRiskScore": 30
+  }
+]
