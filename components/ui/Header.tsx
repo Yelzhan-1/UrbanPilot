@@ -1,5 +1,8 @@
 "use client";
 
+"use client";
+
+import type { ComponentType } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -22,7 +25,7 @@ type HeaderProps = {
 type NavItem = {
   href: string;
   label: string;
-  icon?: React.ComponentType<{ className?: string }>;
+  icon?: ComponentType<{ className?: string }>;
 };
 
 const navItems: NavItem[] = [
