@@ -14,13 +14,17 @@ const STYLES: Record<RiskLevel, string> = {
 };
 
 const DEFAULT_LABELS: Record<RiskLevel, string> = {
-  low: "Low",
-  medium: "Medium",
-  high: "High",
-  critical: "Critical",
+  low: "Низкий",
+  medium: "Средний",
+  high: "Высокий",
+  critical: "Критический",
 };
 
-export default function RiskBadge({ level, label, className = "" }: RiskBadgeProps) {
+export default function RiskBadge({
+  level,
+  label,
+  className = "",
+}: RiskBadgeProps) {
   return (
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${STYLES[level]} ${className}`}

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 type PageStateType = "loading" | "error" | "empty";
 
@@ -17,9 +17,9 @@ const toneStyles: Record<PageStateType, string> = {
 };
 
 const defaultTitle: Record<PageStateType, string> = {
-  loading: "Loading data",
-  error: "Data unavailable",
-  empty: "No data available",
+  loading: "Загрузка данных",
+  error: "Данные недоступны",
+  empty: "Нет данных",
 };
 
 function Spinner() {

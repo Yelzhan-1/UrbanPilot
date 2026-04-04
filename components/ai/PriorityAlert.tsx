@@ -25,16 +25,41 @@ const severityText: Record<Severity, string> = {
   critical: "text-rose-300",
 };
 
+function severityLabel(severity: Severity) {
+  if (severity === "critical") return "Критический";
+  if (severity === "high") return "Высокий";
+  if (severity === "medium") return "Средний";
+  return "Низкий";
+}
+
+function sectorLabel(sector?: string) {
+  if (!sector) return "";
+  if (sector === "Transport") return "Транспорт";
+  if (sector === "Ecology") return "Экология";
+  if (sector === "Safety") return "Безопасность";
+  if (sector === "Utilities") return "Инфраструктура";
+  return sector;
+}
+
+function districtLabel(district?: string) {
+  if (!district) return "";
+  if (district.startsWith("dist-")) return "Район Алматы";
+  return district;
+}
+
 export default function PriorityAlert({
   title,
   message,
   severity,
   sector,
   district,
-  actionLabel = "Open Response Plan",
+  actionLabel = "Открыть план реагирования",
   onActionClick,
   className = "",
 }: PriorityAlertProps) {
+  const displaySector = sectorLabel(sector);
+  const displayDistrict = districtLabel(district);
+
   return (
     <section
       className={`rounded-2xl border p-4 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur ${severityContainer[severity]} ${className}`}
@@ -43,20 +68,32 @@ export default function PriorityAlert({
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className={`text-xs uppercase tracking-[0.2em] ${severityText[severity]}`}>Priority Alert</p>
+          <p className={`text-xs uppercase tracking-[0.2em] ${severityText[severity]}`}>
+            Приоритетный сигнал
+          </p>
           <h3 className="mt-1 text-base font-semibold text-slate-100">{title}</h3>
           <p className="mt-2 text-sm leading-6 text-slate-200">{message}</p>
         </div>
 
-        <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ring-inset ${severityText[severity]} ring-current/30`}>
-          {severity.toUpperCase()}
+        <span
+          className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ring-inset ${severityText[severity]} ring-current/30`}
+        >
+          {severityLabel(severity)}
         </span>
       </div>
 
-      {(sector || district) && (
+      {(displaySector || displayDistrict) && (
         <div className="mt-3 flex flex-wrap gap-2 text-xs">
-          {sector && <span className="rounded-full bg-slate-900/60 px-2.5 py-1 text-slate-200 ring-1 ring-white/10">{sector}</span>}
-          {district && <span className="rounded-full bg-slate-900/60 px-2.5 py-1 text-slate-200 ring-1 ring-white/10">{district}</span>}
+          {displaySector && (
+            <span className="rounded-full bg-slate-900/60 px-2.5 py-1 text-slate-200 ring-1 ring-white/10">
+              {displaySector}
+            </span>
+          )}
+          {displayDistrict && (
+            <span className="rounded-full bg-slate-900/60 px-2.5 py-1 text-slate-200 ring-1 ring-white/10">
+              {displayDistrict}
+            </span>
+          )}
         </div>
       )}
 

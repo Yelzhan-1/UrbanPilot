@@ -1,76 +1,53 @@
 [
   {
     "id": "rec-201",
-    "anomalyId": "anm-101",
-    "sector": "Transport",
-    "title": "Re-route Freight Traffic from Western Arterial",
-    "description": "Divert all incoming heavy goods vehicles to the Northern Bypass to relieve critical congestion and reduce localized emissions.",
+    "anomalyId": "anm-109",
+    "sector": "Ecology",
+    "scope": "dist-003",
+    "priority": "High",
+    "title": "Снизить экологическую нагрузку",
+    "description": "AI-модуль рекомендует приоритетное реагирование на событие «Отклонение качества воды» в зоне «Ауэзовский район». Цель — снизить риск каскадного ухудшения в течение ближайших часов.",
     "suggestedActions": [
-      "Activate digital diversion signage at highway junction 4",
-      "Deploy manual traffic control units to Western Arterial on-ramps",
-      "Send automated push notifications to regional logistics partners"
+      "Усилить контроль экологических датчиков на проблемном участке",
+      "Запустить локальный сценарий предупреждения для населения",
+      "Передать данные в профильные городские службы для оперативной проверки"
     ],
-    "estimatedImpactScore": 85,
-    "implementationDifficulty": "medium",
-    "status": "pending"
+    "estimatedImpactScore": 90,
+    "implementationDifficulty": "low",
+    "status": "resolved"
   },
   {
     "id": "rec-202",
-    "anomalyId": "anm-103",
+    "anomalyId": "anm-112",
     "sector": "Utilities",
-    "title": "Initiate Emergency Load Shedding",
-    "description": "Substation Alpha is at critical capacity. Immediately drop non-essential industrial blocks in Sector C to prevent cascading hardware failure.",
+    "scope": "dist-007",
+    "priority": "Medium",
+    "title": "Нормализовать работу инженерной сети",
+    "description": "AI-модуль рекомендует приоритетное реагирование на событие «Пиковая нагрузка на теплоснабжение» в зоне «Наурызбайский район». Цель — снизить риск каскадного ухудшения в течение ближайших часов.",
     "suggestedActions": [
-      "Remotely isolate Grid Blocks C-1 and C-2",
-      "Dispatch automated brownout warnings to affected facility managers",
-      "Spin up auxiliary battery reserves for critical infrastructure in the basin"
+      "Провести диагностику сетевого узла и смежных участков",
+      "Подготовить резервный сценарий переключения нагрузки",
+      "Уведомить районные эксплуатационные бригады о приоритетном выезде"
     ],
-    "estimatedImpactScore": 95,
+    "estimatedImpactScore": 64,
     "implementationDifficulty": "high",
-    "status": "pending"
-  },
-  {
-    "id": "rec-203",
-    "anomalyId": "anm-104",
-    "sector": "Safety",
-    "title": "Deploy Hazmat Containment and Establish Perimeter",
-    "description": "VOC chemical leak detected in Sector B. Immediate physical containment and evacuation of the surrounding 500m radius is required to prevent civilian exposure.",
-    "suggestedActions": [
-      "Dispatch specialized Fire/Hazmat Unit 7 to coordinate coordinates",
-      "Trigger automated HVAC lockdown in adjacent industrial units",
-      "Activate localized emergency cellular broadcast system"
-    ],
-    "estimatedImpactScore": 98,
-    "implementationDifficulty": "high",
-    "status": "pending"
-  },
-  {
-    "id": "rec-204",
-    "anomalyId": "anm-108",
-    "sector": "Safety",
-    "title": "Activate Automated DDoS Mitigation Protocols",
-    "description": "Port Authority network infrastructure is currently under severe strain. Throttle incoming external requests and reroute through secondary scrubbing centers.",
-    "suggestedActions": [
-      "Enable dynamic traffic scrubbing on primary load balancers",
-      "Temporarily geo-block non-essential inbound connections",
-      "Air-gap core logistics operational subnets from the public facing API"
-    ],
-    "estimatedImpactScore": 75,
-    "implementationDifficulty": "low",
     "status": "in_progress"
   },
   {
-    "id": "rec-205",
-    "anomalyId": "anm-106",
-    "sector": "Utilities",
-    "title": "Dispatch Maintenance Crew for Pressure Check",
-    "description": "Minor pressure drop observed in residential secondary water mains. Preventative maintenance check required to ensure no localized pipe fractures.",
+    "id": "rec-203",
+    "anomalyId": "anm-113",
+    "sector": "Transport",
+    "scope": "dist-001",
+    "priority": "Medium",
+    "title": "Стабилизировать транспортный коридор",
+    "description": "AI-модуль рекомендует приоритетное реагирование на событие «Перегрузка перекрёстного узла» в зоне «Алатауский район». Цель — снизить риск каскадного ухудшения в течение ближайших часов.",
     "suggestedActions": [
-      "Assign Tier 1 utility maintenance drone to scan Block 4",
-      "Isolate secondary valves if leakage exceeds 5% threshold"
+      "Перенастроить светофорные фазы в районе «Алатауский район»",
+      "Вывести дополнительный мониторинг на загруженные коридоры",
+      "Передать приоритетный сценарий в городской центр управления трафиком"
     ],
-    "estimatedImpactScore": 40,
-    "implementationDifficulty": "low",
-    "status": "resolved"
+    "estimatedImpactScore": 90,
+    "implementationDifficulty": "high",
+    "status": "pending"
   }
 ]

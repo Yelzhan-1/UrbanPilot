@@ -1,16 +1,16 @@
 {
-  "cityName": "Neo-Veridia",
-  "overallHealth": 76,
-  "riskScore": 24,
-  "status": "Monitoring Required",
-  "activeAnomalies": 8,
-  "criticalAlerts": 2,
+  "cityName": "Алматы",
+  "overallHealth": 64,
+  "riskScore": 36,
+  "status": "Повышенное внимание",
+  "activeAnomalies": 14,
+  "criticalAlerts": 0,
   "sectorScores": {
-    "transport": 62,
-    "ecology": 78,
-    "safety": 85,
-    "utilities": 79
+    "transport": 65,
+    "ecology": 60,
+    "safety": 71,
+    "utilities": 62
   },
-  "executiveSummary": "Overall city systems are operating at acceptable levels. However, Transport metrics have dropped due to unexpected congestion on the Western Arterial, compounding with a minor Ecology alert regarding localized air quality degradation. Immediate review of traffic routing recommended.",
-  "lastUpdated": "2026-04-03T15:20:26+05:00"
+  "executiveSummary": "Городская платформа фиксирует 14 активных событий. Интегральное состояние города — 64%. Зона приоритетного внимания: Алатауский район.",
+  "lastUpdated": "2026-04-04T05:11:20.846876"
 }

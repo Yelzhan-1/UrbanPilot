@@ -43,16 +43,52 @@ function severityRank(value: Severity): number {
   return 1;
 }
 
+function severityLabel(value: Severity) {
+  if (value === "critical") return "критический";
+  if (value === "high") return "высокий";
+  if (value === "medium") return "средний";
+  return "низкий";
+}
+
+function statusLabel(value: RecommendationStatus) {
+  if (value === "pending") return "ожидает";
+  if (value === "in_progress") return "в работе";
+  if (value === "scheduled") return "запланировано";
+  return "завершено";
+}
+
+function sectorLabel(value: string) {
+  if (value === "Transport") return "Транспорт";
+  if (value === "Ecology") return "Экология";
+  if (value === "Safety") return "Безопасность";
+  if (value === "Utilities") return "Инфраструктура";
+  return value;
+}
+
+function itemWord(count: number) {
+  if (count % 10 === 1 && count % 100 !== 11) return "действие";
+  if (
+    count % 10 >= 2 &&
+    count % 10 <= 4 &&
+    !(count % 100 >= 12 && count % 100 <= 14)
+  ) {
+    return "действия";
+  }
+  return "действий";
+}
+
 export default function RecommendationsPanel({
-  title = "Recommended Actions",
-  subtitle = "Prioritized by estimated city impact",
+  title = "Рекомендуемые действия",
+  subtitle = "Упорядочено по severity и ожидаемому влиянию",
   items,
   maxItems = 6,
-  emptyMessage = "No recommendations available for the current state.",
+  emptyMessage = "Для текущего состояния рекомендации пока недоступны.",
   onActionClick,
   className = "",
 }: RecommendationsPanelProps) {
-  const sorted = [...items].sort((a, b) => severityRank(b.severity) - severityRank(a.severity)).slice(0, maxItems);
+  const sorted = [...items]
+    .sort((a, b) => severityRank(b.severity) - severityRank(a.severity))
+    .slice(0, maxItems);
 
   return (
     <section
@@ -60,31 +96,56 @@ export default function RecommendationsPanel({
     >
       <div className="flex items-end justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">AI Recommendations</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+            AI рекомендации
+          </p>
           <h3 className="mt-1 text-lg font-semibold text-slate-100">{title}</h3>
           <p className="mt-1 text-sm text-slate-400">{subtitle}</p>
         </div>
-        <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">{sorted.length} items</span>
+
+        <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
+          {sorted.length} {itemWord(sorted.length)}
+        </span>
       </div>
 
       {sorted.length === 0 ? (
-        <div className="mt-4 rounded-xl border border-dashed border-white/15 bg-slate-900/50 p-6 text-sm text-slate-400">{emptyMessage}</div>
+        <div className="mt-4 rounded-xl border border-dashed border-white/15 bg-slate-900/50 p-6 text-sm text-slate-400">
+          {emptyMessage}
+        </div>
       ) : (
         <div className="mt-4 space-y-3">
           {sorted.map((item, index) => (
-            <article key={item.id} className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
+            <article
+              key={item.id}
+              className="rounded-xl border border-white/10 bg-slate-900/70 p-4"
+            >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="text-xs text-slate-500">#{index + 1}</p>
-                  <h4 className="mt-0.5 text-sm font-semibold text-slate-100">{item.title}</h4>
-                  <p className="mt-2 text-sm leading-6 text-slate-300">{item.description}</p>
+                  <h4 className="mt-0.5 text-sm font-semibold text-slate-100">
+                    {item.title}
+                  </h4>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">
+                    {item.description}
+                  </p>
                 </div>
+
                 <div className="flex flex-wrap gap-2">
-                  <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${severityStyles[item.severity]}`}>{item.severity}</span>
-                  <span className="rounded-full bg-slate-800 px-2.5 py-1 text-[11px] font-medium text-slate-300 ring-1 ring-white/10">{item.sector}</span>
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${severityStyles[item.severity]}`}
+                  >
+                    {severityLabel(item.severity)}
+                  </span>
+
+                  <span className="rounded-full bg-slate-800 px-2.5 py-1 text-[11px] font-medium text-slate-300 ring-1 ring-white/10">
+                    {sectorLabel(item.sector)}
+                  </span>
+
                   {item.status && (
-                    <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${statusStyles[item.status]}`}>
-                      {item.status.replace("_", " ")}
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${statusStyles[item.status]}`}
+                    >
+                      {statusLabel(item.status)}
                     </span>
                   )}
                 </div>
@@ -92,8 +153,17 @@ export default function RecommendationsPanel({
 
               <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-3">
                 <div className="flex flex-wrap gap-4 text-xs text-slate-400">
-                  {item.eta && <p>ETA: <span className="text-slate-200">{item.eta}</span></p>}
-                  {item.impact && <p>Expected impact: <span className="text-slate-200">{item.impact}</span></p>}
+                  {item.eta && (
+                    <p>
+                      Срок: <span className="text-slate-200">{item.eta}</span>
+                    </p>
+                  )}
+                  {item.impact && (
+                    <p>
+                      Ожидаемый эффект:{" "}
+                      <span className="text-slate-200">{item.impact}</span>
+                    </p>
+                  )}
                 </div>
 
                 {onActionClick && (
@@ -102,7 +172,7 @@ export default function RecommendationsPanel({
                     onClick={() => onActionClick(item)}
                     className="rounded-lg bg-cyan-500/20 px-3 py-1.5 text-xs font-semibold text-cyan-200 ring-1 ring-cyan-400/30 transition hover:bg-cyan-500/30"
                   >
-                    Apply Plan
+                    Открыть план
                   </button>
                 )}
               </div>

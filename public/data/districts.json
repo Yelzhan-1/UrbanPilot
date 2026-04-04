@@ -1,0 +1,130 @@
+[
+  {
+    "id": "dist-001",
+    "name": "Алатауский район",
+    "overallHealth": 57,
+    "overallRisk": "high",
+    "status": "Требует реакции",
+    "population": 315000,
+    "activeAnomaliesCount": 1,
+    "sectorScores": {
+      "transport": 64,
+      "ecology": 47,
+      "safety": 62,
+      "utilities": 55
+    },
+    "mainIssue": "Наибольшее внимание требуется на направление: экологический контур."
+  },
+  {
+    "id": "dist-002",
+    "name": "Алмалинский район",
+    "overallHealth": 70,
+    "overallRisk": "medium",
+    "status": "Под наблюдением",
+    "population": 225000,
+    "activeAnomaliesCount": 4,
+    "sectorScores": {
+      "transport": 70,
+      "ecology": 66,
+      "safety": 81,
+      "utilities": 63
+    },
+    "mainIssue": "Наибольшее внимание требуется на направление: инженерный контур."
+  },
+  {
+    "id": "dist-003",
+    "name": "Ауэзовский район",
+    "overallHealth": 62,
+    "overallRisk": "medium",
+    "status": "Под наблюдением",
+    "population": 305000,
+    "activeAnomaliesCount": 3,
+    "sectorScores": {
+      "transport": 62,
+      "ecology": 53,
+      "safety": 65,
+      "utilities": 68
+    },
+    "mainIssue": "Отклонение качества воды в зоне «коридоры высокого пассажиропотока»."
+  },
+  {
+    "id": "dist-004",
+    "name": "Бостандыкский район",
+    "overallHealth": 68,
+    "overallRisk": "medium",
+    "status": "Под наблюдением",
+    "population": 365000,
+    "activeAnomaliesCount": 3,
+    "sectorScores": {
+      "transport": 61,
+      "ecology": 63,
+      "safety": 78,
+      "utilities": 73
+    },
+    "mainIssue": "Наибольшее внимание требуется на направление: транспортный контур."
+  },
+  {
+    "id": "dist-005",
+    "name": "Жетысуский район",
+    "overallHealth": 58,
+    "overallRisk": "high",
+    "status": "Требует реакции",
+    "population": 210000,
+    "activeAnomaliesCount": 0,
+    "sectorScores": {
+      "transport": 54,
+      "ecology": 58,
+      "safety": 73,
+      "utilities": 50
+    },
+    "mainIssue": "Наибольшее внимание требуется на направление: инженерный контур."
+  },
+  {
+    "id": "dist-006",
+    "name": "Медеуский район",
+    "overallHealth": 71,
+    "overallRisk": "medium",
+    "status": "Под наблюдением",
+    "population": 245000,
+    "activeAnomaliesCount": 0,
+    "sectorScores": {
+      "transport": 72,
+      "ecology": 75,
+      "safety": 73,
+      "utilities": 65
+    },
+    "mainIssue": "Наибольшее внимание требуется на направление: инженерный контур."
+  },
+  {
+    "id": "dist-007",
+    "name": "Наурызбайский район",
+    "overallHealth": 65,
+    "overallRisk": "medium",
+    "status": "Под наблюдением",
+    "population": 215000,
+    "activeAnomaliesCount": 3,
+    "sectorScores": {
+      "transport": 71,
+      "ecology": 67,
+      "safety": 65,
+      "utilities": 57
+    },
+    "mainIssue": "Наибольшее внимание требуется на направление: инженерный контур."
+  },
+  {
+    "id": "dist-008",
+    "name": "Турксибский район",
+    "overallHealth": 65,
+    "overallRisk": "medium",
+    "status": "Под наблюдением",
+    "population": 255000,
+    "activeAnomaliesCount": 0,
+    "sectorScores": {
+      "transport": 66,
+      "ecology": 56,
+      "safety": 72,
+      "utilities": 66
+    },
+    "mainIssue": "Наибольшее внимание требуется на направление: экологический контур."
+  }
+]

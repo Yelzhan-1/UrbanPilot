@@ -1,87 +1,122 @@
 import RiskBadge from "@/components/dashboard/RiskBadge";
+import type { SeverityLevel, Sector } from "@/types/dashboard";
 
-type RiskLevel = "low" | "medium" | "high" | "critical";
-
-export type AnomalyListItem = {
+type AnomalyListItem = {
   id: string;
   title: string;
-  sector?: string;
-  district?: string;
-  severity: RiskLevel;
-  metricLabel?: string;
-  metricValue?: string;
-  detectedAt?: string;
+  district: string;
+  sector: Sector;
+  severity: SeverityLevel;
+  aiRiskScore: number;
+  detectedAt: string;
   description?: string;
 };
 
 type AnomaliesListProps = {
-  items: AnomalyListItem[];
   title?: string;
   subtitle?: string;
-  emptyMessage?: string;
+  items: AnomalyListItem[];
   maxItems?: number;
+  emptyMessage?: string;
   className?: string;
 };
 
-function severityRank(s: RiskLevel): number {
-  if (s === "critical") return 4;
-  if (s === "high") return 3;
-  if (s === "medium") return 2;
+function severityRank(value: SeverityLevel) {
+  if (value === "critical") return 4;
+  if (value === "high") return 3;
+  if (value === "medium") return 2;
   return 1;
 }
 
+function sectorLabel(value: Sector) {
+  if (value === "Transport") return "Транспорт";
+  if (value === "Ecology") return "Экология";
+  if (value === "Safety") return "Безопасность";
+  return "Инфраструктура";
+}
+
+function dotClass(value: SeverityLevel) {
+  if (value === "critical") {
+    return "bg-rose-400 shadow-[0_0_18px_rgba(251,113,133,0.65)]";
+  }
+  if (value === "high") {
+    return "bg-orange-400 shadow-[0_0_18px_rgba(251,146,60,0.55)]";
+  }
+  if (value === "medium") {
+    return "bg-amber-300 shadow-[0_0_18px_rgba(252,211,77,0.55)]";
+  }
+  return "bg-emerald-400 shadow-[0_0_18px_rgba(74,222,128,0.55)]";
+}
+
 export default function AnomaliesList({
+  title = "Уведомления ИИ",
+  subtitle = "Наиболее сильные сигналы текущего цикла мониторинга.",
   items,
-  title = "Active anomalies",
-  subtitle = "Highest severity first",
-  emptyMessage = "No anomalies in the current window.",
-  maxItems = 8,
+  maxItems = 4,
+  emptyMessage = "Активные сигналы пока не найдены.",
   className = "",
 }: AnomaliesListProps) {
-  const sorted = [...items].sort((a, b) => severityRank(b.severity) - severityRank(a.severity)).slice(0, maxItems);
+  const visibleItems = [...items]
+    .sort(
+      (a, b) =>
+        severityRank(b.severity) - severityRank(a.severity) ||
+        b.aiRiskScore - a.aiRiskScore,
+    )
+    .slice(0, maxItems);
 
   return (
     <section
-      className={`rounded-2xl border border-white/10 bg-slate-950/60 p-5 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur ${className}`}
+      className={`rounded-[30px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] p-6 ${className}`}
     >
-      <div className="flex flex-wrap items-end justify-between gap-2">
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Signals</p>
-          <h2 className="mt-1 text-lg font-semibold text-slate-100">{title}</h2>
-          <p className="mt-1 text-sm text-slate-400">{subtitle}</p>
-        </div>
-        <span className="rounded-full bg-slate-800 px-2.5 py-1 text-xs text-slate-300">{sorted.length} shown</span>
+      <div>
+        <div className="section-label">Мониторинг сигналов</div>
+        <h3 className="mt-2 text-xl font-semibold tracking-tight text-white">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm leading-6 text-slate-400">{subtitle}</p>
       </div>
 
-      {sorted.length === 0 ? (
-        <p className="mt-4 rounded-xl border border-dashed border-white/15 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
-          {emptyMessage}
-        </p>
-      ) : (
-        <ul className="mt-4 space-y-3">
-          {sorted.map((item) => (
-            <li key={item.id} className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
-              <div className="flex flex-wrap items-start justify-between gap-2">
+      <div className="mt-5 space-y-3">
+        {visibleItems.length === 0 ? (
+          <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4 text-sm text-slate-400">
+            {emptyMessage}
+          </div>
+        ) : (
+          visibleItems.map((item) => (
+            <article
+              key={item.id}
+              className="rounded-2xl border border-white/8 bg-white/[0.03] p-4"
+            >
+              <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-sm font-semibold text-slate-100">{item.title}</p>
-                  {item.description ? <p className="mt-1 text-xs text-slate-400">{item.description}</p> : null}
+                  <div className="text-sm font-semibold text-white">{item.title}</div>
+                  <div className="mt-1 text-sm text-slate-400">{item.district}</div>
+                  {item.description ? (
+                    <div className="mt-2 text-sm leading-6 text-slate-400">
+                      {item.description}
+                    </div>
+                  ) : null}
                 </div>
+
+                <span className={`mt-0.5 h-2.5 w-2.5 rounded-full ${dotClass(item.severity)}`} />
+              </div>
+
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 <RiskBadge level={item.severity} />
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-medium text-slate-300">
+                  {sectorLabel(item.sector)}
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-medium text-slate-300">
+                  Риск ИИ: {item.aiRiskScore}/100
+                </span>
+                <span className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                  {item.detectedAt}
+                </span>
               </div>
-              <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
-                {item.sector ? <span>Sector: <span className="text-slate-300">{item.sector}</span></span> : null}
-                {item.district ? <span>District: <span className="text-slate-300">{item.district}</span></span> : null}
-                {item.metricLabel && item.metricValue ? (
-                  <span>
-                    {item.metricLabel}: <span className="text-slate-300">{item.metricValue}</span>
-                  </span>
-                ) : null}
-                {item.detectedAt ? <span>Detected: <span className="text-slate-300">{item.detectedAt}</span></span> : null}
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+            </article>
+          ))
+        )}
+      </div>
     </section>
   );
 }

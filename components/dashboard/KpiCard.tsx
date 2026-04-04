@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 type KpiCardProps = {
   label: string;
@@ -27,16 +27,33 @@ export default function KpiCard({
 }: KpiCardProps) {
   return (
     <article
-      className={`rounded-xl border border-white/10 bg-slate-900/70 p-4 shadow-sm ring-1 ring-white/5 ${className}`}
+      className={`rounded-[26px] border border-white/10 bg-white/[0.05] p-5 backdrop-blur-xl ${className}`}
     >
-      <div className="flex items-start justify-between gap-2">
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{label}</p>
-        {icon ? <span className="text-slate-500">{icon}</span> : null}
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-sm text-slate-400">{label}</div>
+          <div className="mt-2 text-4xl font-semibold tracking-tight text-white">
+            {value}
+          </div>
+        </div>
+
+        {icon ? (
+          <div className="rounded-2xl border border-white/10 bg-black/20 p-3 text-cyan-200">
+            {icon}
+          </div>
+        ) : null}
       </div>
-      <p className="mt-2 text-2xl font-semibold tabular-nums text-slate-100">{value}</p>
-      {hint ? <p className="mt-1 text-xs text-slate-500">{hint}</p> : null}
+
+      {hint ? (
+        <div className="mt-4 text-xs uppercase tracking-[0.14em] text-slate-500">
+          {hint}
+        </div>
+      ) : null}
+
       {trendLabel && trend ? (
-        <p className={`mt-2 text-xs font-medium ${trendColor(trend)}`}>{trendLabel}</p>
+        <p className={`mt-2 text-xs font-medium ${trendColor(trend)}`}>
+          {trendLabel}
+        </p>
       ) : null}
     </article>
   );

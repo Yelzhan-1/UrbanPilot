@@ -1,86 +1,102 @@
 // lib/ai-engine.ts
 
-import { Anomaly, District, Sector } from '../types/dashboard';
+import type {
+  Anomaly,
+  District,
+  Sector,
+  SectorPrediction,
+  SeverityLevel,
+} from "@/types/dashboard";
 
-// Weights applied to different severity levels for risk calculations
-const SEVERITY_WEIGHTS = {
+const SEVERITY_WEIGHTS: Record<SeverityLevel, number> = {
   low: 10,
   medium: 25,
   high: 50,
   critical: 85,
 };
 
-/**
- * AI Utility to dynamically calculate a district's real-time health score.
- * It takes the baseline health and penalizes it based on active anomalies.
- */
-export function calculateRealtimeHealth(district: District, activeAnomalies: Anomaly[]): number {
-  const districtAnomalies = activeAnomalies.filter(a => a.districtId === district.id);
-
-  if (districtAnomalies.length === 0) return district.overallHealth;
-
-  // Calculate the total risk penalty for the district
-  const penalty = districtAnomalies.reduce((acc, anomaly) => {
-    const baseWeight = SEVERITY_WEIGHTS[anomaly.severity];
-    // Factor in the AI's confidence/risk score (percentage) for this specific anomaly
-    const impact = baseWeight * (anomaly.aiRiskScore / 100);
-    return acc + impact;
-  }, 0);
-
-  // Ensure the health score stays within a realistic 0-100 range
-  return Math.max(0, Math.round(district.overallHealth - penalty));
+function clamp(value: number, min = 0, max = 100) {
+  return Math.max(min, Math.min(max, value));
 }
 
-/**
- * AI Decision Support: Prioritizes a list of anomalies.
- * Useful for sorting the Decision Center inbox so operators see the worst threats first.
- */
+function getSeverityWeight(severity: SeverityLevel) {
+  return SEVERITY_WEIGHTS[severity];
+}
+
+export function calculateRealtimeHealth(
+  district: District,
+  activeAnomalies: Anomaly[],
+): number {
+  const districtAnomalies = activeAnomalies.filter(
+    (anomaly) => anomaly.districtId === district.id,
+  );
+
+  if (districtAnomalies.length === 0) {
+    return district.overallHealth;
+  }
+
+  const penalty = districtAnomalies.reduce((sum, anomaly) => {
+    const weight = getSeverityWeight(anomaly.severity);
+    const impact = weight * (anomaly.aiRiskScore / 100);
+    return sum + impact;
+  }, 0);
+
+  return Math.round(clamp(district.overallHealth - penalty));
+}
+
 export function prioritizeAnomalies(anomalies: Anomaly[]): Anomaly[] {
   return [...anomalies].sort((a, b) => {
-    // First, sort by severity category
-    const weightDiff = SEVERITY_WEIGHTS[b.severity] - SEVERITY_WEIGHTS[a.severity];
-    if (weightDiff !== 0) return weightDiff;
-    
-    // If severity category is the same, use the precise AI Risk Score as the tiebreaker
-    return b.aiRiskScore - a.aiRiskScore;
+    const severityDiff =
+      getSeverityWeight(b.severity) - getSeverityWeight(a.severity);
+
+    if (severityDiff !== 0) {
+      return severityDiff;
+    }
+
+    const riskDiff = b.aiRiskScore - a.aiRiskScore;
+    if (riskDiff !== 0) {
+      return riskDiff;
+    }
+
+    return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
   });
 }
 
-/**
- * Simulates a real-time AI short-term prediction for a sector's health.
- * In a real production app, this would call a remote Machine Learning endpoint.
- */
-export function predictNextHourTrend(currentScore: number, sector: Sector, activeAnomalies: Anomaly[]): {
-  predictedScore: number;
-  trend: 'improving' | 'stable' | 'degrading';
-  confidence: number;
-} {
-  const sectorAnomalies = activeAnomalies.filter(a => a.sector === sector);
-  const hasCritical = sectorAnomalies.some(a => a.severity === 'critical' || a.severity === 'high');
-  
-  let predictedScore = currentScore;
-  let trend: 'improving' | 'stable' | 'degrading' = 'stable';
-  // Simulate AI confidence interval
-  let confidence = 85 + Math.random() * 10; 
+export function predictNextHourTrend(
+  currentScore: number,
+  sector: Sector,
+  activeAnomalies: Anomaly[],
+): SectorPrediction {
+  const sectorAnomalies = activeAnomalies.filter(
+    (anomaly) => anomaly.sector === sector,
+  );
 
-  if (hasCritical) {
-    // Sharp drop expected due to critical alerts
-    predictedScore = Math.max(0, currentScore - (10 + Math.random() * 15));
-    trend = 'degrading';
-    confidence -= 15; 
+  const hasHighPressure = sectorAnomalies.some(
+    (anomaly) =>
+      anomaly.severity === "critical" || anomaly.severity === "high",
+  );
+
+  let predictedScore = currentScore;
+  let trend: SectorPrediction["trend"] = "stable";
+  let confidence = 90;
+
+  if (hasHighPressure) {
+    predictedScore = currentScore - (10 + sectorAnomalies.length * 3);
+    trend = "degrading";
+    confidence = 78;
   } else if (sectorAnomalies.length > 0) {
-    // Minor drop expected due to low/medium alerts
-    predictedScore = Math.max(0, currentScore - (2 + Math.random() * 8));
-    trend = 'degrading';
+    predictedScore = currentScore - (3 + sectorAnomalies.length * 2);
+    trend = "degrading";
+    confidence = 84;
   } else if (currentScore < 90) {
-    // Natural recovery if there are no active issues
-    predictedScore = Math.min(100, currentScore + (2 + Math.random() * 5));
-    trend = 'improving';
+    predictedScore = currentScore + 4;
+    trend = "improving";
+    confidence = 88;
   }
 
   return {
-    predictedScore: Math.round(predictedScore),
+    predictedScore: Math.round(clamp(predictedScore)),
     trend,
-    confidence: Math.round(confidence)
+    confidence: Math.round(clamp(confidence)),
   };
 }

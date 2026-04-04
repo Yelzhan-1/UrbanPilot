@@ -1,15 +1,14 @@
-type Severity = "low" | "medium" | "high" | "critical";
+import type { SeverityLevel } from "@/types/dashboard";
 
 type DistrictDetails = {
   id: string;
   name: string;
-  riskScore: number; // 0-100
-  severity: Severity;
+  healthScore: number;
+  riskScore: number;
+  severity: SeverityLevel;
+  status: string;
   activeAlerts: number;
-  criticalAlerts?: number;
-  trend?: "rising" | "stable" | "falling";
   population?: number;
-  updatedAt?: string;
   summary?: string;
   topIssue?: string;
   recommendedAction?: string;
@@ -21,114 +20,149 @@ type DistrictDetailsCardProps = {
   className?: string;
 };
 
-const severityStyles: Record<Severity, string> = {
-  low: "bg-emerald-500/10 text-emerald-300 ring-1 ring-emerald-500/30",
-  medium: "bg-amber-500/10 text-amber-300 ring-1 ring-amber-500/30",
-  high: "bg-orange-500/10 text-orange-300 ring-1 ring-orange-500/30",
-  critical: "bg-rose-500/10 text-rose-300 ring-1 ring-rose-500/30",
-};
-
-function clamp(value: number): number {
-  return Math.max(0, Math.min(100, value));
+function clamp(value: number) {
+  return Math.max(0, Math.min(100, Math.round(value)));
 }
 
-function barColor(score: number): string {
-  if (score >= 85) return "bg-rose-500";
-  if (score >= 65) return "bg-orange-500";
-  if (score >= 40) return "bg-amber-500";
-  return "bg-emerald-500";
+function severityLabel(value: SeverityLevel) {
+  if (value === "critical") return "Критический";
+  if (value === "high") return "Высокий";
+  if (value === "medium") return "Средний";
+  return "Низкий";
 }
 
-function trendStyles(trend?: "rising" | "stable" | "falling"): string {
-  if (trend === "rising") return "text-rose-300";
-  if (trend === "falling") return "text-emerald-300";
-  return "text-slate-300";
+function severityClass(value: SeverityLevel) {
+  if (value === "critical") {
+    return "bg-rose-500/10 text-rose-300 ring-1 ring-rose-500/30";
+  }
+  if (value === "high") {
+    return "bg-orange-500/10 text-orange-300 ring-1 ring-orange-500/30";
+  }
+  if (value === "medium") {
+    return "bg-amber-500/10 text-amber-300 ring-1 ring-amber-500/30";
+  }
+  return "bg-emerald-500/10 text-emerald-300 ring-1 ring-emerald-500/30";
+}
+
+function barClass(score: number) {
+  if (score >= 80) return "bg-rose-400";
+  if (score >= 65) return "bg-orange-400";
+  if (score >= 50) return "bg-amber-300";
+  return "bg-emerald-400";
 }
 
 export default function DistrictDetailsCard({
   district,
-  title = "Selected District",
+  title = "Карточка района",
   className = "",
 }: DistrictDetailsCardProps) {
   return (
     <section
-      className={`rounded-2xl border border-white/10 bg-slate-950/60 p-5 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur ${className}`}
+      className={`rounded-[28px] border border-white/10 bg-slate-950/60 p-5 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur ${className}`}
     >
       <div className="flex items-end justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">District Intelligence</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+            Районная аналитика
+          </p>
           <h3 className="mt-1 text-lg font-semibold text-slate-100">{title}</h3>
         </div>
       </div>
 
       {!district ? (
         <div className="mt-4 rounded-xl border border-dashed border-white/15 bg-slate-900/50 p-6 text-sm text-slate-400">
-          Select a district to inspect detailed risk signals and recommended response.
+          Выбери район, чтобы открыть подробную карточку с его состоянием,
+          проблемами и приоритетными действиями.
         </div>
       ) : (
         <div className="mt-4 space-y-4">
           <div className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-xs uppercase tracking-wide text-slate-400">District</p>
-                <h4 className="mt-1 text-xl font-semibold text-slate-100">{district.name}</h4>
+                <p className="text-xs uppercase tracking-wide text-slate-400">
+                  Район
+                </p>
+                <h4 className="mt-1 text-xl font-semibold text-slate-100">
+                  {district.name}
+                </h4>
               </div>
-              <span className={`rounded-full px-3 py-1 text-xs font-semibold ${severityStyles[district.severity]}`}>
-                {district.severity} risk
+
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${severityClass(
+                  district.severity,
+                )}`}
+              >
+                {severityLabel(district.severity)}
               </span>
             </div>
 
-            <div className="mt-4">
-              <div className="mb-1 flex items-center justify-between text-xs text-slate-400">
-                <span>Overall Risk Score</span>
-                <span className="text-slate-200">{clamp(district.riskScore)}/100</span>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-xl border border-white/10 bg-slate-950/50 p-3">
+                <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">
+                  Оперативное здоровье
+                </div>
+                <div className="mt-2 text-lg font-semibold text-white">
+                  {clamp(district.healthScore)}
+                </div>
               </div>
-              <div className="h-2 w-full rounded-full bg-slate-800">
-                <div className={`h-2 rounded-full ${barColor(clamp(district.riskScore))}`} style={{ width: `${clamp(district.riskScore)}%` }} />
+
+              <div className="rounded-xl border border-white/10 bg-slate-950/50 p-3">
+                <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">
+                  Риск
+                </div>
+                <div className="mt-2 text-lg font-semibold text-white">
+                  {clamp(district.riskScore)}/100
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-white/10 bg-slate-950/50 p-3">
+                <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">
+                  Активные сигналы
+                </div>
+                <div className="mt-2 text-lg font-semibold text-white">
+                  {district.activeAlerts}
+                </div>
               </div>
             </div>
+
+            <div className="mt-4 h-2.5 w-full rounded-full bg-white/10">
+              <div
+                className={`h-2.5 rounded-full ${barClass(district.riskScore)}`}
+                style={{ width: `${clamp(district.riskScore)}%` }}
+              />
+            </div>
+
+            <div className="mt-3 text-sm text-slate-400">{district.status}</div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid gap-3">
             <div className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
-              <p className="text-xs uppercase tracking-wide text-slate-400">Active Alerts</p>
-              <p className="mt-1 text-2xl font-semibold text-slate-100">{district.activeAlerts}</p>
-              <p className="mt-2 text-xs text-slate-400">
-                Critical: <span className="text-rose-300">{district.criticalAlerts ?? 0}</span>
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
-              <p className="text-xs uppercase tracking-wide text-slate-400">Trend</p>
-              <p className={`mt-1 text-2xl font-semibold ${trendStyles(district.trend)}`}>{district.trend ?? "stable"}</p>
-              <p className="mt-2 text-xs text-slate-400">
-                {district.population ? `Population: ${district.population.toLocaleString()}` : "Population not provided"}
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
-            <p className="text-xs uppercase tracking-wide text-slate-400">Operational Summary</p>
-            <p className="mt-2 text-sm leading-6 text-slate-200">
-              {district.summary ?? "No summary provided for this district."}
-            </p>
-
-            <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
-              <div className="rounded-lg border border-white/10 bg-slate-950/60 p-3">
-                <p className="text-xs text-slate-400">Top Issue</p>
-                <p className="mt-1 text-sm font-medium text-slate-100">
-                  {district.topIssue ?? "No issue identified"}
-                </p>
+              <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                Краткая сводка
               </div>
-              <div className="rounded-lg border border-white/10 bg-slate-950/60 p-3">
-                <p className="text-xs text-slate-400">Recommended Action</p>
-                <p className="mt-1 text-sm font-medium text-cyan-200">
-                  {district.recommendedAction ?? "No action suggested"}
-                </p>
+              <div className="mt-2 text-sm leading-6 text-slate-300">
+                {district.summary ?? "Сводка по району пока недоступна."}
               </div>
             </div>
 
-            {district.updatedAt && <p className="mt-3 text-xs text-slate-500">Updated: {district.updatedAt}</p>}
+            <div className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
+              <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                Главная проблема
+              </div>
+              <div className="mt-2 text-sm leading-6 text-slate-300">
+                {district.topIssue ?? "Явно выраженная проблемная зона не выделена."}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
+              <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+                Рекомендуемое действие
+              </div>
+              <div className="mt-2 text-sm leading-6 text-slate-300">
+                {district.recommendedAction ??
+                  "Рекомендация по выбранному району пока не сформирована."}
+              </div>
+            </div>
           </div>
         </div>
       )}

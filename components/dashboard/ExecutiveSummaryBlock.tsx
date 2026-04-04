@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import RiskBadge from "@/components/dashboard/RiskBadge";
 
 type RiskLevel = "low" | "medium" | "high" | "critical";
@@ -70,7 +70,7 @@ function renderAction(action: ActionItem): ReactNode {
 }
 
 export default function ExecutiveSummaryBlock({
-  title = "Executive Summary",
+  title = "Сводка ИИ",
   summary,
   riskLevel,
   updatedAt,
@@ -85,16 +85,19 @@ export default function ExecutiveSummaryBlock({
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-cyan-300">AI Briefing</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-cyan-300">
+            Городская сводка
+          </p>
           <h2 className="mt-1 text-lg font-semibold text-slate-50">{title}</h2>
           {cityName || updatedAt ? (
             <p className="mt-1 text-xs text-slate-400">
               {cityName ? <span>{cityName}</span> : null}
               {cityName && updatedAt ? <span className="mx-1">·</span> : null}
-              {updatedAt ? <span>Updated {updatedAt}</span> : null}
+              {updatedAt ? <span>Обновлено: {updatedAt}</span> : null}
             </p>
           ) : null}
         </div>
+
         <RiskBadge level={riskLevel} />
       </div>
 
@@ -104,10 +107,17 @@ export default function ExecutiveSummaryBlock({
 
       {highlights.length > 0 ? (
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {highlights.map((h) => (
-            <div key={h.id} className="rounded-lg border border-white/10 bg-slate-950/50 p-3">
-              <p className="text-[11px] uppercase tracking-wide text-slate-500">{h.label}</p>
-              <p className={`mt-1 text-sm font-medium ${toneClass(h.tone)}`}>{h.value}</p>
+          {highlights.map((item) => (
+            <div
+              key={item.id}
+              className="rounded-lg border border-white/10 bg-slate-950/50 p-3"
+            >
+              <p className="text-[11px] uppercase tracking-wide text-slate-500">
+                {item.label}
+              </p>
+              <p className={`mt-1 text-sm font-medium ${toneClass(item.tone)}`}>
+                {item.value}
+              </p>
             </div>
           ))}
         </div>

@@ -1,161 +1,162 @@
-type Severity = "low" | "medium" | "high" | "critical";
-
-type SectorRisk = {
-  transport: number;
-  ecology: number;
-  safety: number;
-  utilities: number;
-};
-
 type ScenarioResultsProps = {
+  districtName: string;
   scenarioLabel: string;
-  intensity: number; // 0-100
-  baselineRisk: number; // 0-100
-  projectedRisk: number; // 0-100
-  beforeSectors: SectorRisk;
-  afterSectors: SectorRisk;
+  baselineHealth: number;
+  projectedHealth: number;
+  riskScore: number;
+  priorityZone: string;
+  mainDriver: string;
+  summary: string;
+  recommendedActions: string[];
   className?: string;
 };
 
-type SectorItem = {
-  key: keyof SectorRisk;
-  label: string;
-};
-
-const SECTORS: SectorItem[] = [
-  { key: "transport", label: "Transport" },
-  { key: "ecology", label: "Ecology" },
-  { key: "safety", label: "Safety" },
-  { key: "utilities", label: "Utilities" },
-];
-
-function clamp(value: number): number {
-  return Math.max(0, Math.min(100, value));
+function clamp(value: number) {
+  return Math.max(0, Math.min(100, Math.round(value)));
 }
 
-function severityFromScore(score: number): Severity {
-  if (score >= 85) return "critical";
-  if (score >= 65) return "high";
-  if (score >= 40) return "medium";
-  return "low";
+function severityLabel(score: number) {
+  if (score >= 85) return "Критический риск";
+  if (score >= 65) return "Высокий риск";
+  if (score >= 40) return "Средний риск";
+  return "Низкий риск";
 }
 
-function severityStyle(severity: Severity): string {
-  if (severity === "critical") return "bg-rose-500/10 text-rose-300 ring-1 ring-rose-500/30";
-  if (severity === "high") return "bg-orange-500/10 text-orange-300 ring-1 ring-orange-500/30";
-  if (severity === "medium") return "bg-amber-500/10 text-amber-300 ring-1 ring-amber-500/30";
+function severityClass(score: number) {
+  if (score >= 85) {
+    return "bg-rose-500/10 text-rose-300 ring-1 ring-rose-500/30";
+  }
+  if (score >= 65) {
+    return "bg-orange-500/10 text-orange-300 ring-1 ring-orange-500/30";
+  }
+  if (score >= 40) {
+    return "bg-amber-500/10 text-amber-300 ring-1 ring-amber-500/30";
+  }
   return "bg-emerald-500/10 text-emerald-300 ring-1 ring-emerald-500/30";
 }
 
-function barColor(score: number): string {
-  if (score >= 85) return "bg-rose-500";
-  if (score >= 65) return "bg-orange-500";
-  if (score >= 40) return "bg-amber-500";
-  return "bg-emerald-500";
-}
-
-function deltaColor(delta: number): string {
-  if (delta > 0) return "text-rose-300";
-  if (delta < 0) return "text-emerald-300";
+function deltaColor(delta: number) {
+  if (delta > 0) return "text-emerald-300";
+  if (delta < 0) return "text-rose-300";
   return "text-slate-300";
 }
 
 export default function ScenarioResults({
+  districtName,
   scenarioLabel,
-  intensity,
-  baselineRisk,
-  projectedRisk,
-  beforeSectors,
-  afterSectors,
+  baselineHealth,
+  projectedHealth,
+  riskScore,
+  priorityZone,
+  mainDriver,
+  summary,
+  recommendedActions,
   className = "",
 }: ScenarioResultsProps) {
-  const base = clamp(baselineRisk);
-  const projected = clamp(projectedRisk);
-  const delta = projected - base;
-  const projectedSeverity = severityFromScore(projected);
+  const baseline = clamp(baselineHealth);
+  const projected = clamp(projectedHealth);
+  const risk = clamp(riskScore);
+  const delta = projected - baseline;
 
   return (
     <section
-      className={`rounded-2xl border border-white/10 bg-slate-950/60 p-5 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur ${className}`}
+      className={`rounded-[28px] border border-white/10 bg-slate-950/60 p-5 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur ${className}`}
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Simulation Results</p>
-          <h3 className="mt-1 text-lg font-semibold text-slate-100">{scenarioLabel}</h3>
-          <p className="mt-1 text-sm text-slate-400">Intensity: {clamp(intensity)}%</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+            Результат модели
+          </p>
+          <h3 className="mt-1 text-lg font-semibold text-slate-100">
+            {districtName}
+          </h3>
+          <p className="mt-1 text-sm text-slate-400">{scenarioLabel}</p>
         </div>
-        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${severityStyle(projectedSeverity)}`}>
-          {projectedSeverity.toUpperCase()} RISK
+
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${severityClass(
+            risk,
+          )}`}
+        >
+          {severityLabel(risk)}
         </span>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
-          <p className="text-xs uppercase tracking-wide text-slate-400">Baseline Risk</p>
-          <p className="mt-1 text-2xl font-semibold text-slate-100">{base}/100</p>
-          <div className="mt-2 h-1.5 w-full rounded-full bg-slate-800">
-            <div className={`h-1.5 rounded-full ${barColor(base)}`} style={{ width: `${base}%` }} />
+      <div className="mt-5 grid gap-3 md:grid-cols-3">
+        <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
+          <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+            Базовое здоровье
+          </div>
+          <div className="mt-2 text-3xl font-semibold text-white">{baseline}</div>
+          <div className="mt-2 text-sm text-slate-400">До применения сценария</div>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
+          <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+            Прогнозное здоровье
+          </div>
+          <div className="mt-2 text-3xl font-semibold text-white">{projected}</div>
+          <div className={`mt-2 text-sm ${deltaColor(delta)}`}>
+            {delta > 0 ? "+" : ""}
+            {delta} к базовому состоянию
           </div>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
-          <p className="text-xs uppercase tracking-wide text-slate-400">Projected Risk</p>
-          <p className="mt-1 text-2xl font-semibold text-slate-100">{projected}/100</p>
-          <div className="mt-2 h-1.5 w-full rounded-full bg-slate-800">
-            <div className={`h-1.5 rounded-full ${barColor(projected)}`} style={{ width: `${projected}%` }} />
+        <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
+          <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+            Индекс риска
           </div>
-        </div>
-
-        <div className="rounded-xl border border-white/10 bg-slate-900/70 p-4">
-          <p className="text-xs uppercase tracking-wide text-slate-400">Risk Delta</p>
-          <p className={`mt-1 text-2xl font-semibold ${deltaColor(delta)}`}>{delta > 0 ? "+" : ""}{delta}</p>
-          <p className="mt-2 text-xs text-slate-400">
-            {delta > 0 ? "Risk worsens under this scenario." : delta < 0 ? "Risk improves under this scenario." : "No net change."}
-          </p>
+          <div className="mt-2 text-3xl font-semibold text-white">{risk}</div>
+          <div className="mt-2 text-sm text-slate-400">Интегральная оценка сценария</div>
         </div>
       </div>
 
-      <div className="mt-5 rounded-xl border border-white/10 bg-slate-900/70 p-4">
-        <p className="text-xs uppercase tracking-wide text-slate-400">Sector Impacts</p>
-        <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
-          {SECTORS.map((sector) => {
-            const before = clamp(beforeSectors[sector.key]);
-            const after = clamp(afterSectors[sector.key]);
-            const change = after - before;
+      <div className="mt-5 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+        <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
+          <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+            Приоритетная зона
+          </div>
+          <div className="mt-2 text-base font-semibold text-white">
+            {priorityZone}
+          </div>
 
-            return (
-              <article key={sector.key} className="rounded-lg border border-white/10 bg-slate-950/50 p-3">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-slate-100">{sector.label}</p>
-                  <p className={`text-xs font-semibold ${deltaColor(change)}`}>
-                    {change > 0 ? "+" : ""}{change}
-                  </p>
-                </div>
+          <div className="mt-5 text-xs uppercase tracking-[0.14em] text-slate-500">
+            Главный драйвер
+          </div>
+          <div className="mt-2 text-sm leading-6 text-slate-300">{mainDriver}</div>
 
-                <div className="mt-3 space-y-2">
-                  <div>
-                    <div className="mb-1 flex justify-between text-[11px] text-slate-400">
-                      <span>Before</span>
-                      <span>{before}</span>
+          <div className="mt-5 text-xs uppercase tracking-[0.14em] text-slate-500">
+            Краткая сводка ИИ
+          </div>
+          <div className="mt-2 text-sm leading-6 text-slate-400">{summary}</div>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
+          <div className="text-xs uppercase tracking-[0.14em] text-slate-500">
+            Рекомендуемые действия
+          </div>
+
+          <div className="mt-3 space-y-2">
+            {recommendedActions.length === 0 ? (
+              <div className="rounded-xl border border-white/10 bg-slate-950/50 p-3 text-sm text-slate-400">
+                Список действий пока не сформирован.
+              </div>
+            ) : (
+              recommendedActions.map((action, index) => (
+                <div
+                  key={`${action}-${index}`}
+                  className="rounded-xl border border-white/10 bg-slate-950/50 p-3"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-cyan-400/20 bg-cyan-400/10 text-xs font-semibold text-cyan-300">
+                      {index + 1}
                     </div>
-                    <div className="h-1.5 w-full rounded-full bg-slate-800">
-                      <div className={`h-1.5 rounded-full ${barColor(before)}`} style={{ width: `${before}%` }} />
-                    </div>
+                    <div className="text-sm leading-6 text-slate-300">{action}</div>
                   </div>
-
-                  <div>
-                    <div className="mb-1 flex justify-between text-[11px] text-slate-400">
-                      <span>After</span>
-                      <span>{after}</span>
-                    </div>
-                    <div className="h-1.5 w-full rounded-full bg-slate-800">
-                      <div className={`h-1.5 rounded-full ${barColor(after)}`} style={{ width: `${after}%` }} />
-                    </div>
-                  </div>
                 </div>
-              </article>
-            );
-          })}
+              ))
+            )}
+          </div>
         </div>
       </div>
     </section>
